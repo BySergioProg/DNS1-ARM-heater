@@ -79,7 +79,8 @@ namespace DNS1_ARM_heater
         }
         private void SaveErrors(bool Err, string ErrText)
         {
-            string connectionString = $@"Data Source=.\WINCC;Initial Catalog=DNS_HEAT;Integrated Security=True";
+            string Dir= Properties.Settings.Default.DBadress;
+            string connectionString = $@"Data Source={Dir};Initial Catalog=DNS_HEAT;Integrated Security=True";
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -123,7 +124,8 @@ namespace DNS1_ARM_heater
         {
             try
             {
-                string connectionString = $@"Data Source=.\WINCC;Initial Catalog=DNS_HEAT;Integrated Security=True";
+                string Dir = Properties.Settings.Default.DBadress;
+                string connectionString = $@"Data Source={Dir};Initial Catalog=DNS_HEAT;Integrated Security=True";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -231,6 +233,13 @@ namespace DNS1_ARM_heater
             }
 
 
+        }
+
+        private void AlarmHilstoryFormOpen(object sender, RoutedEventArgs e)
+        {
+            ErrorHistory errorHistory = new ErrorHistory();
+            errorHistory.Owner = this;
+            errorHistory.Show();
         }
     }
 }

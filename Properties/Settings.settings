@@ -14,5 +14,8 @@
     <Setting Name="DataBits" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">8</Value>
     </Setting>
+    <Setting Name="DBadress" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">.\WINCC</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

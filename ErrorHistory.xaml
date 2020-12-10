@@ -1,0 +1,46 @@
+﻿<Window x:Class="DNS1_ARM_heater.ErrorHistory"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DNS1_ARM_heater"
+        mc:Ignorable="d"
+        Title="История аварий" Height="551" Width="709.209" Icon="Resources/smp.png" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="27*"/>
+            <ColumnDefinition Width="28*"/>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="27*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40*"/>
+            <RowDefinition Height="379*"/>
+
+        </Grid.RowDefinitions>
+        <Viewbox Grid.Row="0" Grid.Column="1">
+            <DatePicker x:Name="Date_start" HorizontalAlignment="Left" VerticalAlignment="Bottom" SelectedDateChanged="Date_start_SelectedDateChanged"/>
+        </Viewbox>
+        <Viewbox Grid.Row="0" Grid.Column="3">
+            <DatePicker x:Name="Date_end" HorizontalAlignment="Left" VerticalAlignment="Bottom" SelectedDateChanged="Date_end_SelectedDateChanged"/>
+        </Viewbox>
+        <Viewbox Grid.Row="0" Grid.Column="0">
+            <Label Content="Период: с" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="16"/>
+        </Viewbox>
+        <Viewbox Grid.Row="0" Grid.Column="2">
+            <Label Content="по" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="16"/>
+        </Viewbox>
+
+        <DataGrid x:Name="History" CanUserAddRows="False" AutoGenerateColumns="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="16">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Дата и время" Binding="{Binding Path=Time}" Width="0.5*"/>
+                <DataGridTextColumn Header="Авария" Binding="{Binding Path=Alarm}" Width="*"/>
+
+            </DataGrid.Columns>
+
+
+        </DataGrid>
+
+    </Grid>
+</Window>
