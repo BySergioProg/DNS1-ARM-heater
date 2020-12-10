@@ -10,8 +10,8 @@
         <Image Margin="0" Source="Resources/BackgroundOil.png" Stretch="Fill" Grid.ColumnSpan="2"/>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="99*"/>
-                <ColumnDefinition Width="46*"/>
+                <ColumnDefinition Width="109*"/>
+                <ColumnDefinition Width="36*"/>
                 <ColumnDefinition Width="38*"/>
                 <ColumnDefinition Width="38*"/>
                 <ColumnDefinition Width="38*"/>
@@ -51,14 +51,14 @@
             <Viewbox Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2">
                 <Label Content="Этап работы-" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"/>
             </Viewbox>
-            <Viewbox Grid.Column="6" Grid.Row="0" Grid.ColumnSpan="6" HorizontalAlignment="Left" >
-            <Label  Content="{Binding Path=StageWork}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontWeight="Bold"/>
+            <Viewbox Grid.Column="6" Grid.Row="0" Grid.ColumnSpan="6" HorizontalAlignment="Left">
+                <Label  Content="{Binding Path=StageWork}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="4" Grid.Column="2" HorizontalAlignment="Right">
                 <Label  Content="{Binding Path=Pneft_in}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold"/>
             </Viewbox>
 
-            <Viewbox Grid.Column="3" Grid.Row="4" HorizontalAlignment="Left">
+            <Viewbox Grid.Column="3" Grid.Row="4" HorizontalAlignment="Left" >
                 <Label Content="кПа" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Column="2" Grid.Row="6" HorizontalAlignment="Right" >
