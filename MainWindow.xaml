@@ -46,20 +46,22 @@
                 <Button Content="Журнал аварий" Click="AlarmHilstoryFormOpen"/>
             </Viewbox>
             <Viewbox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
-                <Button Content="Журнал параметров" />
+                <Button Content="Журнал параметров" Click="ParamFormOpen" />
             </Viewbox>
-            <Viewbox Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="7">
+            <Viewbox Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2">
                 <Label Content="Этап работы-" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"/>
             </Viewbox>
-            <Label Grid.Column="6" Grid.Row="0" Content="{Binding Path=StageWork}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontWeight="Bold" Height="10" Width="10" />
-            <Viewbox Grid.Row="4" Grid.Column="2">
+            <Viewbox Grid.Column="6" Grid.Row="0" Grid.ColumnSpan="6" HorizontalAlignment="Left" >
+            <Label  Content="{Binding Path=StageWork}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Row="4" Grid.Column="2" HorizontalAlignment="Right">
                 <Label  Content="{Binding Path=Pneft_in}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold"/>
             </Viewbox>
 
-            <Viewbox Grid.Column="3" Grid.Row="4">
+            <Viewbox Grid.Column="3" Grid.Row="4" HorizontalAlignment="Left">
                 <Label Content="кПа" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold"/>
             </Viewbox>
-            <Viewbox Grid.Column="2" Grid.Row="6" >
+            <Viewbox Grid.Column="2" Grid.Row="6" HorizontalAlignment="Right" >
                 <Label Content="{Binding Path=Tneft}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold"  />
             </Viewbox>
             <Viewbox Grid.Column="3" Grid.Row="6" >

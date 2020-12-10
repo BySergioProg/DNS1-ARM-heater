@@ -1,0 +1,38 @@
+﻿<Window x:Class="DNS1_ARM_heater.Journal"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DNS1_ARM_heater"
+        mc:Ignorable="d"
+        Title="Журнал" Height="590" Width="1056" Icon="Resources/smp.png">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="41*"/>
+            <RowDefinition Height="518*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="127*"/>
+            <ColumnDefinition Width="115*"/>
+            <ColumnDefinition Width="146*"/>
+            <ColumnDefinition Width="660*"/>
+        </Grid.ColumnDefinitions>
+        <Viewbox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" Width="79">
+            <Label Content="Дата" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontSize="16"/>
+        </Viewbox>
+        <Viewbox Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Width="114">
+            <DatePicker x:Name="Date_start" HorizontalAlignment="Left" VerticalAlignment="Bottom" SelectedDateChanged="SelectedDateChanged"/>
+        </Viewbox>
+        <DataGrid x:Name="DataExit" AutoGenerateColumns="False" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4" FontSize="16">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Дата и время" Binding="{Binding Path=DateTime}" Width="*"/>
+                <DataGridTextColumn Header="Р газа в коллекторе" Binding="{Binding Path=Pgaz_kol}" Width="*"/>
+                <DataGridTextColumn Header="Р газа после рег." Binding="{Binding Path=P_gas_reg}" Width="*"/>
+                <DataGridTextColumn Header="Р нефти" Binding="{Binding Path=Pneft_in}" Width="*"/>
+                <DataGridTextColumn Header="Т нефти" Binding="{Binding Path=Tneft}" Width="*"/>
+                <DataGridTextColumn Header="Т воды" Binding="{Binding Path=Tvod}" Width="*"/>
+            </DataGrid.Columns>
+
+        </DataGrid>
+    </Grid>
+</Window>

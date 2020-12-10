@@ -241,5 +241,12 @@ namespace DNS1_ARM_heater
             errorHistory.Owner = this;
             errorHistory.Show();
         }
+
+        private void ParamFormOpen(object sender, RoutedEventArgs e)
+        {
+            Journal journal = new Journal();
+            journal.Owner = this;
+            journal.Show();
+        }
     }
 }
