@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
+using NLog;
 
 namespace DNS1_ARM_heater
 {
@@ -34,33 +35,42 @@ namespace DNS1_ARM_heater
         }
         private void Show_Data()
         {
-            string Dir = Properties.Settings.Default.DBadress;
-            string connectionString = $@"Data Source={Dir};Initial Catalog=DNS_HEAT;Integrated Security=True";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                string date_start = Convert.ToDateTime(Date_start.SelectedDate).ToString("yyyy-MM-ddTHH:mm:ss");
-                string date_end = Convert.ToDateTime(Date_end.SelectedDate).ToString("yyyy-MM-ddTHH:mm:ss");
-                List<Errors> errors = new List<Errors>();
-                connection.Open();
-                string sqlExpression = $"SELECT * FROM Errors WHERE DateTime>='{date_start}' AND DateTime<='{date_end}' ORDER BY DateTime DESC";
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
+                string Dir = Properties.Settings.Default.DBadress;
+                string connectionString = $@"Data Source={Dir};Initial Catalog=DNS_HEAT;Integrated Security=True";
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
+                    string date_start = Convert.ToDateTime(Date_start.SelectedDate).ToString("yyyy-MM-ddTHH:mm:ss");
+                    string date_end = Convert.ToDateTime(Date_end.SelectedDate).ToString("yyyy-MM-ddTHH:mm:ss");
+                    List<Errors> errors = new List<Errors>();
+                    connection.Open();
+                    string sqlExpression = $"SELECT * FROM Errors WHERE DateTime>='{date_start}' AND DateTime<='{date_end}' ORDER BY DateTime DESC";
+                    SqlCommand command = new SqlCommand(sqlExpression, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
                     {
-                        errors.Add(new Errors()
+                        while (reader.Read())
                         {
-                            Time = Convert.ToString(reader.GetValue(1)),
-                            Alarm=(string)(reader.GetValue(3))
-                          }  );
-                    
-                    }
-                }
-                
-                History.ItemsSource = errors;
+                            errors.Add(new Errors()
+                            {
+                                Time = Convert.ToString(reader.GetValue(1)),
+                                Alarm = (string)(reader.GetValue(3))
+                            });
 
-                connection.Close();
+                        }
+                    }
+
+                    History.ItemsSource = errors;
+
+                    connection.Close();
+                }
+            }
+            catch (Exception Ex)
+            {
+                Logger log = LogManager.GetCurrentClassLogger();
+                log.Error($"Ошибка доступа к БД {Ex.Message}");
+                MessageBox.Show(Ex.Message);
             }
 
         }

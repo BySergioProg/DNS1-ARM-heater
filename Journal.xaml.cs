@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -39,40 +40,50 @@ namespace DNS1_ARM_heater
         }
         private void Show_Data()
         {
-            string Dir = Properties.Settings.Default.DBadress;
-            string connectionString = $@"Data Source={Dir};Initial Catalog=DNS_HEAT;Integrated Security=True";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                string date_start = Convert.ToDateTime(Date_start.SelectedDate).ToString("yyyy-MM-ddTHH:mm:ss");
-                DateTime Date1 = new DateTime();
-                Date1 = Convert.ToDateTime(Date_start.SelectedDate).AddHours(24);
-                string date_end = Convert.ToDateTime(Date1).ToString("yyyy-MM-ddTHH:mm:ss");
-                List<Data> data = new List<Data>();
-                connection.Open();
-                string sqlExpression = $"SELECT * FROM History WHERE DateTime>='{date_start}' AND DateTime<='{date_end}' ORDER BY DateTime DESC";
-                SqlCommand command = new SqlCommand(sqlExpression, connection);
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
+                string Dir = Properties.Settings.Default.DBadress;
+                string connectionString = $@"Data Source={Dir};Initial Catalog=DNS_HEAT;Integrated Security=True";
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    while (reader.Read())
+                    string date_start = Convert.ToDateTime(Date_start.SelectedDate).ToString("yyyy-MM-ddTHH:mm:ss");
+                    DateTime Date1 = new DateTime();
+                    Date1 = Convert.ToDateTime(Date_start.SelectedDate).AddHours(24);
+                    string date_end = Convert.ToDateTime(Date1).ToString("yyyy-MM-ddTHH:mm:ss");
+                    List<Data> data = new List<Data>();
+                    connection.Open();
+                    string sqlExpression = $"SELECT * FROM History WHERE DateTime>='{date_start}' AND DateTime<='{date_end}' ORDER BY DateTime DESC";
+                    SqlCommand command = new SqlCommand(sqlExpression, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.HasRows)
                     {
-                        data.Add(new Data()
+                        while (reader.Read())
                         {
-                            DateTime=Convert.ToString(reader.GetValue(1)),
-                            Pgaz_kol=(int)reader.GetValue(2),
-                            Tneft=(int)reader.GetValue(3),
-                            Tvod=(int)reader.GetValue(4),
-                            Pneft_in=(int)reader.GetValue(5),
-                            P_gas_reg=(int)reader.GetValue(6)
+                            data.Add(new Data()
+                            {
+                                DateTime = Convert.ToString(reader.GetValue(1)),
+                                Pgaz_kol = (int)reader.GetValue(2),
+                                Tneft = (int)reader.GetValue(3),
+                                Tvod = (int)reader.GetValue(4),
+                                Pneft_in = (int)reader.GetValue(5),
+                                P_gas_reg = (int)reader.GetValue(6)
 
-                        });
+                            });
 
+                        }
                     }
+
+                    DataExit.ItemsSource = data;
+
+                    connection.Close();
                 }
+            }
+            catch (Exception Ex)
+            {
+                Logger log = LogManager.GetCurrentClassLogger();
+                log.Error($"Ошибка доступа к БД {Ex.Message}");
+                MessageBox.Show(Ex.Message);
 
-                DataExit.ItemsSource = data;
-
-                connection.Close();
             }
 
         }

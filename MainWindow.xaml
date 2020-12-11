@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DNS1_ARM_heater"
         mc:Ignorable="d"
-        Title="ДНС-1 ПП-0.63" Activated="ReadModbus" Icon="Resources/smp.png">
+        Title="ДНС-1 ПП-0.63" Activated="ReadModbus" Icon="Resources/smp.png" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
         <Image Margin="0" Source="Resources/BackgroundOil.png" Stretch="Fill" Grid.ColumnSpan="2"/>
         <Grid>

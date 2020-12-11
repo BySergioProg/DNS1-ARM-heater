@@ -17,6 +17,7 @@ using System.IO.Ports;
 using System.Windows.Threading;
 using System.Collections;
 using System.Data.SqlClient;
+using NLog;
 
 namespace DNS1_ARM_heater
 {
@@ -61,7 +62,9 @@ namespace DNS1_ARM_heater
                 return holding_register;
             }
             catch
-            { throw; }
+            {
+
+                throw; }
         }
         private string[] SetErrors(ushort ErrData)
         {
@@ -79,46 +82,57 @@ namespace DNS1_ARM_heater
         }
         private void SaveErrors(bool Err, string ErrText)
         {
-            string Dir= Properties.Settings.Default.DBadress;
-            string connectionString = $@"Data Source={Dir};Initial Catalog=DNS_HEAT;Integrated Security=True";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                if (Err)
+                string Dir = Properties.Settings.Default.DBadress;
+                string connectionString = $@"Data Source={Dir};Initial Catalog=DNS_HEAT;Integrated Security=True";
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-
-                    string sqlExpression = $"SELECT * FROM Errors WHERE Message='{ErrText}' and Activ=1";
-                    SqlCommand command = new SqlCommand(sqlExpression, connection);
-                    SqlDataReader reader = command.ExecuteReader();
-                    if (!reader.HasRows)
+                    connection.Open();
+                    if (Err)
                     {
-                    using (SqlConnection connection2 = new SqlConnection(connectionString))
+
+                        string sqlExpression = $"SELECT * FROM Errors WHERE Message='{ErrText}' and Activ=1";
+                        SqlCommand command = new SqlCommand(sqlExpression, connection);
+                        SqlDataReader reader = command.ExecuteReader();
+                        if (!reader.HasRows)
+                        {
+                            using (SqlConnection connection2 = new SqlConnection(connectionString))
+                            {
+                                connection2.Open();
+                                DateTime date = DateTime.Now;
+                                string date_str = date.ToString("yyyy-MM-ddTHH:mm:ss");
+                                sqlExpression = $"INSERT INTO Errors (DateTime, Activ, Message) VALUES ('{date_str}', 1, '{ErrText}' )";
+                                SqlCommand command2 = new SqlCommand(sqlExpression, connection2);
+                                int number = command2.ExecuteNonQuery();
+                                connection2.Close();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        using (SqlConnection connection2 = new SqlConnection(connectionString))
                         {
                             connection2.Open();
                             DateTime date = DateTime.Now;
                             string date_str = date.ToString("yyyy-MM-ddTHH:mm:ss");
-                            sqlExpression = $"INSERT INTO Errors (DateTime, Activ, Message) VALUES ('{date_str}', 1, '{ErrText}' )";
+                            string sqlExpression = $"UPDATE Errors SET Activ=0 WHERE Activ=1 AND  Message='{ErrText}'";
                             SqlCommand command2 = new SqlCommand(sqlExpression, connection2);
                             int number = command2.ExecuteNonQuery();
                             connection2.Close();
                         }
                     }
-                }
-                else
-                {
-                    using (SqlConnection connection2 = new SqlConnection(connectionString))
-                    {
-                        connection2.Open();
-                        DateTime date = DateTime.Now;
-                        string date_str = date.ToString("yyyy-MM-ddTHH:mm:ss");
-                        string sqlExpression = $"UPDATE Errors SET Activ=0 WHERE Activ=1 AND  Message='{ErrText}'";
-                        SqlCommand command2 = new SqlCommand(sqlExpression, connection2);
-                        int number = command2.ExecuteNonQuery();
-                        connection2.Close();
-                    }
-                }
                     connection.Close();
+                }
             }
+            catch (Exception Ex)
+            {
+
+                Logger log = LogManager.GetCurrentClassLogger();
+                log.Error($"Ошибка сохранения аварий в БД {Ex.Message}");
+                MessageBox.Show(Ex.Message);
+            }
+        
         }
         private void SaveData(object sender, EventArgs e)//Сохранение данных в БД
         {
@@ -139,6 +153,9 @@ namespace DNS1_ARM_heater
             }
             catch (Exception Ex)
             {
+         
+                Logger log = LogManager.GetCurrentClassLogger();
+                log.Error($"Ошибка сохранения данных в БД {Ex.Message}");
                 MessageBox.Show(Ex.Message);
             }
         }
@@ -146,6 +163,10 @@ namespace DNS1_ARM_heater
         {
             try
             {
+                if (this.WindowState == WindowState.Minimized)
+                {
+                    this.WindowState = WindowState.Normal;
+                }
 
                 if (serialPort.IsOpen)
                 {
@@ -160,9 +181,9 @@ namespace DNS1_ARM_heater
                     holding_register = ReadMB(slaveID, 273, 1);
                     switch (holding_register[0])
                     {
-                       case 1:
+                        case 1:
                             mbData.StageWork = "Предпроверка";
-                         break;
+                            break;
                         case 2:
                             mbData.StageWork = "Вентиляция топки";
                             break;
@@ -203,7 +224,7 @@ namespace DNS1_ARM_heater
                             mbData.StageWork = "Предпроверка";
                             break;
                         default:
-                            mbData.StageWork = "Не опоределено";
+                            mbData.StageWork = "Не определено";
                             break;
                     }
                     holding_register = ReadMB(slaveID, 267, 2);
@@ -229,7 +250,9 @@ namespace DNS1_ARM_heater
             }
             catch(Exception Ex)
             {
-                MessageBox.Show(Ex.Message);
+                Logger log = LogManager.GetCurrentClassLogger();
+                log.Error($"Ошибка чтения данных с контроллера. {Ex.Message}");
+                MessageBox.Show($"Ошибка чтения данных с контроллера. {Ex.Message}");
             }
 
 
