@@ -30,6 +30,12 @@ namespace DNS1_ARM_heater
             public int Pneft_in { get; set; }//Давление нефти на входе
             public int P_gas_reg { get; set; }//Давление газа после регулятора
 
+
+            public int Pgaz_kol2 { get; set; }//Давление газа в коллекторе
+            public int Tneft2 { get; set; }//Температура нефти на выходе
+            public int Tvod2 { get; set; }//Температура воды
+            public int Pneft_in2 { get; set; }//Давление нефти на входе
+            public int P_gas_reg2 { get; set; }//Давление газа после регулятора
         }
         public Journal()
         {
@@ -66,7 +72,12 @@ namespace DNS1_ARM_heater
                                 Tneft = (int)reader.GetValue(3),
                                 Tvod = (int)reader.GetValue(4),
                                 Pneft_in = (int)reader.GetValue(5),
-                                P_gas_reg = (int)reader.GetValue(6)
+                                P_gas_reg = (int)reader.GetValue(6),
+                                Pgaz_kol2 = (int)reader.GetValue(7),
+                                Tneft2 = (int)reader.GetValue(8),
+                                Tvod2 = (int)reader.GetValue(9),
+                                Pneft_in2 = (int)reader.GetValue(10),
+                                P_gas_reg2 = (int)reader.GetValue(11)
 
                             });
 

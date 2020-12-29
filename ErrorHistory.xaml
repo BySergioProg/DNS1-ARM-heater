@@ -35,6 +35,7 @@
         <DataGrid x:Name="History" CanUserAddRows="False" AutoGenerateColumns="False" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" FontSize="16">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Дата и время" Binding="{Binding Path=Time}" Width="0.5*"/>
+                <DataGridTextColumn Header="Печь" Binding="{Binding Path=BoilerNo}" Width="0.2*"/>
                 <DataGridTextColumn Header="Авария" Binding="{Binding Path=Alarm}" Width="*"/>
 
             </DataGrid.Columns>

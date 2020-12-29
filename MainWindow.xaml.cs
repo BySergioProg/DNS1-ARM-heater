@@ -47,8 +47,8 @@ namespace DNS1_ARM_heater
             serialPort.PortName = Properties.Settings.Default.PortName;
             serialPort.BaudRate = Properties.Settings.Default.BaudRate;
             serialPort.DataBits = Properties.Settings.Default.DataBits;
-            serialPort.Parity = Parity.None;
-            serialPort.StopBits = StopBits.One;
+            serialPort.Parity = Properties.Settings.Default.Parity;
+            serialPort.StopBits = Properties.Settings.Default.StopBits;
             serialPort.Open();
         }
         private ushort[] ReadMB(byte slaveID, ushort startAddress, ushort numOfPoints)
@@ -63,8 +63,8 @@ namespace DNS1_ARM_heater
             }
             catch
             {
-
-                throw; }
+                  throw;
+            }
         }
         private string[] SetErrors(ushort ErrData)
         {
@@ -80,7 +80,7 @@ namespace DNS1_ARM_heater
             return Visible;
 
         }
-        private void SaveErrors(bool Err, string ErrText)
+        private void SaveErrors(bool Err, string ErrText, int BoilerNo)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace DNS1_ARM_heater
                     if (Err)
                     {
 
-                        string sqlExpression = $"SELECT * FROM Errors WHERE Message='{ErrText}' and Activ=1";
+                        string sqlExpression = $"SELECT * FROM Errors WHERE Message='{ErrText}' and Activ=1 and BoilerNo={BoilerNo}";
                         SqlCommand command = new SqlCommand(sqlExpression, connection);
                         SqlDataReader reader = command.ExecuteReader();
                         if (!reader.HasRows)
@@ -102,7 +102,7 @@ namespace DNS1_ARM_heater
                                 connection2.Open();
                                 DateTime date = DateTime.Now;
                                 string date_str = date.ToString("yyyy-MM-ddTHH:mm:ss");
-                                sqlExpression = $"INSERT INTO Errors (DateTime, Activ, Message) VALUES ('{date_str}', 1, '{ErrText}' )";
+                                sqlExpression = $"INSERT INTO Errors (DateTime, Activ, Message, BoilerNo) VALUES ('{date_str}', 1, '{ErrText}', {BoilerNo} )";
                                 SqlCommand command2 = new SqlCommand(sqlExpression, connection2);
                                 int number = command2.ExecuteNonQuery();
                                 connection2.Close();
@@ -145,7 +145,7 @@ namespace DNS1_ARM_heater
                     connection.Open();
                     DateTime date = DateTime.Now;
                     string date_str = date.ToString("yyyy-MM-ddTHH:mm:ss");
-                    string sqlExpression = $"INSERT INTO History (DateTime, Pgaz_kol, Tneft, Tvod, Pneft_in, P_gas_reg) VALUES ( '{date_str}', {mbData.Pgaz_kol}, {mbData.Tneft}, {mbData.Tvod}, {mbData.Pneft_in}, {mbData.P_gas_reg})";
+                    string sqlExpression = $"INSERT INTO History (DateTime, Pgaz_kol, Tneft, Tvod, Pneft_in, P_gas_reg, Pgaz_kol1, Tneft1, Tvod1, Pneft_in1, P_gas_reg1) VALUES ( '{date_str}', {mbData.Pgaz_kol}, {mbData.Tneft}, {mbData.Tvod}, {mbData.Pneft_in}, {mbData.P_gas_reg}, {mbData.Pgaz_kol2}, {mbData.Tneft2}, {mbData.Tvod2}, {mbData.Pneft_in2}, {mbData.P_gas_reg2})";
                     SqlCommand command = new SqlCommand(sqlExpression, connection);
                     int number = command.ExecuteNonQuery();
                     connection.Close();
@@ -163,22 +163,25 @@ namespace DNS1_ARM_heater
         {
             try
             {
-                if (this.WindowState == WindowState.Minimized)
-                {
-                    this.WindowState = WindowState.Normal;
-                }
+                //if (this.WindowState == WindowState.Minimized)
+                //{
+                //    this.WindowState = WindowState.Normal;
+                //}
 
                 if (serialPort.IsOpen)
                 {
+                    //Данные печи ПП-0.63 
+                    #region PP-063
                     byte slaveID = Properties.Settings.Default.slaveID;
-                    ushort[] holding_register = ReadMB(slaveID, 265, 1);
-                    mbData.Pgaz_kol = holding_register[0];
-                    holding_register = ReadMB(slaveID, 313, 6);
+                    ushort[] holding_register = ReadMB(slaveID, 264, 2);//265
+                    mbData.P_gas_reg = holding_register[0];
+                    mbData.Pgaz_kol = holding_register[1];
+                    holding_register = ReadMB(slaveID, 337, 1);//338
                     mbData.Tneft = holding_register[0];
-                    mbData.P_gas_reg = holding_register[2];
-                    mbData.Tvod = holding_register[4];
-                    mbData.Pneft_in = holding_register[5];
-                    holding_register = ReadMB(slaveID, 273, 1);
+                    holding_register = ReadMB(slaveID, 341, 2);//342
+                    mbData.Tvod = holding_register[0];
+                    mbData.Pneft_in = holding_register[1];
+                    holding_register = ReadMB(slaveID, 272, 1);//273
                     switch (holding_register[0])
                     {
                         case 1:
@@ -227,22 +230,100 @@ namespace DNS1_ARM_heater
                             mbData.StageWork = "Не определено";
                             break;
                     }
-                    holding_register = ReadMB(slaveID, 267, 2);
+                    holding_register = ReadMB(slaveID, 266, 2);//267
                     mbData.Error1 = SetErrors(holding_register[0]);
                     mbData.Error2 = SetErrors(holding_register[1]);
                     BitArray Error1 = new BitArray(new int[] { holding_register[0] });
                     BitArray Error2 = new BitArray(new int[] { holding_register[1] });
-                    SaveErrors(Error1[0], "Наличие пламени до розжига");
-                    SaveErrors(Error1[2], "Низкий уровень воды");
-                    SaveErrors(Error1[5], "Высокое давление нефти на входе печи");
-                    SaveErrors(Error1[6], "Низкое давление нефти на входе печи");
-                    SaveErrors(Error1[7], "Не герметичен отсечной клапан на горелке");
-                    SaveErrors(Error1[9], "Утечка газа в коллекторе");
-                    SaveErrors(Error1[11], "Нет пламени на горелке");
-                    SaveErrors(Error1[13], "Высокое давление газа на горелке");
-                    SaveErrors(Error1[14], "Низкое давление газа на горелке");
-                    SaveErrors(Error2[1], "Высокая температура воды");
-                    SaveErrors(Error2[2], "Высокая температура нефти");
+                    SaveErrors(Error1[0], "Наличие пламени до розжига",1 );
+                    SaveErrors(Error1[2], "Низкий уровень воды", 1);
+                    SaveErrors(Error1[5], "Высокое давление нефти на входе печи", 1);
+                    SaveErrors(Error1[6], "Низкое давление нефти на входе печи", 1);
+                    SaveErrors(Error1[7], "Не герметичен отсечной клапан на горелке", 1);
+                    SaveErrors(Error1[9], "Утечка газа в коллекторе", 1);
+                    SaveErrors(Error1[11], "Нет пламени на горелке", 1);
+                    SaveErrors(Error1[13], "Высокое давление газа на горелке", 1);
+                    SaveErrors(Error1[14], "Низкое давление газа на горелке", 1);
+                    SaveErrors(Error2[1], "Высокая температура воды", 1);
+                    SaveErrors(Error2[2], "Высокая температура нефти", 1);
+                    #endregion
+                    //Данные печи ПП-0.63А
+
+                    #region PP-063A
+                    slaveID = Properties.Settings.Default.slaveID2;
+                    holding_register = ReadMB(slaveID, 264, 1);//265
+                    mbData.P_gas_reg2 = holding_register[0];
+                    holding_register = ReadMB(slaveID, 312, 6);//313
+                    mbData.Tneft2 = holding_register[0];
+                    mbData.Pgaz_kol2 = holding_register[2];
+                    mbData.Tvod2 = holding_register[4];
+                    mbData.Pneft_in2 = holding_register[5];
+                    holding_register = ReadMB(slaveID, 272, 1);//273
+                    switch (holding_register[0])
+                    {
+                        case 1:
+                            mbData.StageWork2 = "Предпроверка";
+                            break;
+                        case 2:
+                            mbData.StageWork2 = "Вентиляция топки";
+                            break;
+                        case 3:
+                            mbData.StageWork2 = "Опрессовка отсечного клапана";
+                            break;
+                        case 4:
+                            mbData.StageWork2 = "Заполнение газом коллектора";
+                            break;
+                        case 5:
+                            mbData.StageWork2 = "Опрессовка коллектора";
+                            break;
+                        case 6:
+                            mbData.StageWork2 = "Сброс газа";
+                            break;
+                        case 7:
+                            mbData.StageWork2 = "Розжиг запальника";
+                            break;
+                        case 8:
+                            mbData.StageWork2 = "Контроль пламени запальника";
+                            break;
+                        case 9:
+                            mbData.StageWork2 = "Розжиг основной горелки";
+                            break;
+                        case 10:
+                            mbData.StageWork2 = "Стабилизация пламени основной горелки";
+                            break;
+                        case 11:
+                            mbData.StageWork2 = "Прогрев топки";
+                            break;
+                        case 12:
+                            mbData.StageWork2 = "Выход на режим";
+                            break;
+                        case 13:
+                            mbData.StageWork2 = "Активен ручной режим";
+                            break;
+                        case 14:
+                            mbData.StageWork2 = "Предпроверка";
+                            break;
+                        default:
+                            mbData.StageWork2 = "Не определено";
+                            break;
+                    }
+                    holding_register = ReadMB(slaveID, 266, 2);//267
+                    mbData.Error12 = SetErrors(holding_register[0]);
+                    mbData.Error22 = SetErrors(holding_register[1]);
+                    BitArray Error12 = new BitArray(new int[] { holding_register[0] });
+                    BitArray Error22 = new BitArray(new int[] { holding_register[1] });
+                    SaveErrors(Error12[0], "Наличие пламени до розжига", 2);
+                    SaveErrors(Error12[2], "Низкий уровень воды", 2);
+                    SaveErrors(Error12[5], "Высокое давление нефти на входе печи", 2);
+                    SaveErrors(Error12[6], "Низкое давление нефти на входе печи", 2);
+                    SaveErrors(Error12[7], "Не герметичен отсечной клапан на горелке", 2);
+                    SaveErrors(Error12[9], "Утечка газа в коллекторе", 2);
+                    SaveErrors(Error12[11], "Нет пламени на горелке", 2);
+                    SaveErrors(Error12[13], "Высокое давление газа на горелке", 2);
+                    SaveErrors(Error12[14], "Низкое давление газа на горелке", 2);
+                    SaveErrors(Error22[1], "Высокая температура воды", 2);
+                    SaveErrors(Error22[2], "Высокая температура нефти", 2);
+                    #endregion
                 }
                 else
                 { SerialOpen(); }

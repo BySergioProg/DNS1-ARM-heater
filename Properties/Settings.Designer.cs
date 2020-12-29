@@ -67,5 +67,32 @@ namespace DNS1_ARM_heater.Properties {
                 return ((string)(this["DBadress"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        public global::System.IO.Ports.Parity Parity {
+            get {
+                return ((global::System.IO.Ports.Parity)(this["Parity"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("One")]
+        public global::System.IO.Ports.StopBits StopBits {
+            get {
+                return ((global::System.IO.Ports.StopBits)(this["StopBits"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public byte slaveID2 {
+            get {
+                return ((byte)(this["slaveID2"]));
+            }
+        }
     }
 }

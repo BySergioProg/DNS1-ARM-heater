@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DNS1_ARM_heater"
         mc:Ignorable="d"
-        Title="ДНС-1 ПП-0.63" Activated="ReadModbus" Icon="Resources/smp.png" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="ДНС-1 ПП-0.63" Icon="Resources/smp.png" WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Grid>
         <Image Margin="0" Source="Resources/BackgroundOil.png" Stretch="Fill" Grid.ColumnSpan="2"/>
         <Grid>
@@ -13,18 +13,19 @@
                 <ColumnDefinition Width="109*"/>
                 <ColumnDefinition Width="36*"/>
                 <ColumnDefinition Width="38*"/>
+                <ColumnDefinition Width="54*"/>
+                <ColumnDefinition Width="34*"/>
+                <ColumnDefinition Width="47*"/>
+                <ColumnDefinition Width="47*"/>
+                <ColumnDefinition Width="56*"/>
+                <ColumnDefinition Width="62*"/>
                 <ColumnDefinition Width="38*"/>
-                <ColumnDefinition Width="38*"/>
-                <ColumnDefinition Width="67*"/>
-                <ColumnDefinition Width="68*"/>
-                <ColumnDefinition Width="27*"/>
-                <ColumnDefinition Width="29*"/>
-                <ColumnDefinition Width="81*"/>
-                <ColumnDefinition Width="36*"/>
-                <ColumnDefinition Width="36*"/>
-                <ColumnDefinition Width="74*"/>
-                <ColumnDefinition Width="68*"/>
-                <ColumnDefinition Width="15*"/>
+                <ColumnDefinition Width="37*"/>
+                <ColumnDefinition Width="45*"/>
+                <ColumnDefinition Width="52*"/>
+                <ColumnDefinition Width="44*"/>
+                <ColumnDefinition Width="49*"/>
+                <ColumnDefinition Width="12*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="42*"/>
@@ -32,61 +33,67 @@
                 <RowDefinition Height="42*"/>
                 <RowDefinition Height="25*"/>
                 <RowDefinition Height="33*"/>
-                <RowDefinition Height="25*"/>
+                <RowDefinition Height="29*"/>
+                <RowDefinition Height="28*"/>
                 <RowDefinition Height="30*"/>
-                <RowDefinition Height="32*"/>
-                <RowDefinition Height="36*"/>
-                <RowDefinition Height="34*"/>
-                <RowDefinition Height="38*"/>
+                <RowDefinition Height="21*"/>
+                <RowDefinition Height="37*"/>
+                <RowDefinition Height="50*"/>
                 <RowDefinition Height="32*"/>
                 <RowDefinition Height="31*"/>
                 <RowDefinition Height="62*"/>
             </Grid.RowDefinitions>
-            <Viewbox Grid.Row="2" Grid.Column="11" Grid.ColumnSpan="2">
+            <Viewbox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3">
+                <Label Content="ПП-0.63" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Row="1" Grid.Column="11" Grid.ColumnSpan="3">
+                <Label Content="ПП-0.63А" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                 <Button Content="Журнал аварий" Click="AlarmHilstoryFormOpen"/>
             </Viewbox>
-            <Viewbox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
-                <Button Content="Журнал параметров" Click="ParamFormOpen" />
+            <Viewbox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+                <Button Content="Журнал замеров" Click="ParamFormOpen" />
             </Viewbox>
-            <Viewbox Grid.Row="0" Grid.Column="4" Grid.ColumnSpan="2">
+            <Viewbox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
                 <Label Content="Этап работы-" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"/>
             </Viewbox>
-            <Viewbox Grid.Column="6" Grid.Row="0" Grid.ColumnSpan="6" HorizontalAlignment="Left">
+            <Viewbox Grid.Column="3" Grid.ColumnSpan="4" Grid.Row="0" HorizontalAlignment="Left">
                 <Label  Content="{Binding Path=StageWork}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontWeight="Bold"/>
             </Viewbox>
-            <Viewbox Grid.Row="4" Grid.Column="2" HorizontalAlignment="Right">
+            <Viewbox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Right">
                 <Label  Content="{Binding Path=Pneft_in}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold"/>
             </Viewbox>
 
-            <Viewbox Grid.Column="3" Grid.Row="4" HorizontalAlignment="Left" >
+            <Viewbox Grid.Column="2" Grid.Row="4" HorizontalAlignment="Left" >
                 <Label Content="кПа" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold"/>
             </Viewbox>
-            <Viewbox Grid.Column="2" Grid.Row="6" HorizontalAlignment="Right" >
+            <Viewbox Grid.Column="1" Grid.Row="6" HorizontalAlignment="Right"  >
                 <Label Content="{Binding Path=Tneft}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold"  />
             </Viewbox>
-            <Viewbox Grid.Column="3" Grid.Row="6" >
+            <Viewbox Grid.Column="2" Grid.Row="6" >
                 <Label Content="°С" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold"  Grid.RowSpan="2" />
             </Viewbox>
-            <Viewbox Grid.Column="7" Grid.Row="7" >
+            <Viewbox Grid.Column="4" Grid.Row="7" HorizontalAlignment="Right" >
                 <Label Content="{Binding Path=Tvod}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold" />
             </Viewbox>
-            <Viewbox Grid.Column="8" Grid.Row="7" >
+            <Viewbox Grid.Column="5" Grid.Row="7" >
                 <Label Content="°С" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" />
             </Viewbox>
-            <Viewbox Grid.Column="3" Grid.Row="9" >
+            <Viewbox Grid.Column="1" Grid.Row="9" HorizontalAlignment="Right" >
                 <Label Content="{Binding Path=P_gas_reg}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold"/>
             </Viewbox>
-            <Viewbox Grid.Column="4" Grid.Row="9" >
+            <Viewbox Grid.Column="2" Grid.Row="9" >
                 <Label Content="кПа" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" />
             </Viewbox>
-            <Viewbox Grid.Column="10" Grid.Row="12" >
+            <Viewbox Grid.Column="5" Grid.Row="12" >
                 <Label Content="{Binding Path=Pgaz_kol}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold" />
             </Viewbox>
-            <Viewbox Grid.Column="11" Grid.Row="12"  >
+            <Viewbox Grid.Column="6" Grid.Row="12"  >
                 <Label Content="кПа" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" />
             </Viewbox>
-            <Viewbox Grid.Column="11" Grid.Row="3" Grid.ColumnSpan="3" Grid.RowSpan="7" >
-                <ListBox x:Name="Alarms" Background="#FF26FBE0" BorderBrush="#FF26FBE0" HorizontalAlignment="Left" VerticalAlignment="Top" >
+            <Viewbox Grid.Column="0" Grid.Row="10" Grid.ColumnSpan="5" Grid.RowSpan="4" >
+                <ListBox x:Name="Alarms" Background="{x:Null}" BorderBrush="{x:Null}"  HorizontalAlignment="Left" VerticalAlignment="Top" >
                     <ListBoxItem Content="Наличие пламени до розжига" Foreground="#FFFB1A1A" FontWeight="Bold" Visibility="{Binding Path=Error1[0]}"/>
                     <ListBoxItem Content="Низкий уровень воды" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error1[2]}"/>
                     <ListBoxItem Content="Высокое давление нефти на входе печи" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error1[5]}"/>
@@ -98,6 +105,59 @@
                     <ListBoxItem Content="Низкое давление газа на горелке" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error1[14]}"/>
                     <ListBoxItem Content="Высокая температура воды" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error2[1]}"/>
                     <ListBoxItem Content="Высокая температура нефти" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error2[2]}"/>
+                </ListBox>
+            </Viewbox>
+
+            <Viewbox Grid.Row="0" Grid.Column="9" Grid.ColumnSpan="2">
+                <Label Content="Этап работы-" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Column="11" Grid.ColumnSpan="4" Grid.Row="0" HorizontalAlignment="Left">
+                <Label  Content="{Binding Path=StageWork2}" FontSize="16" HorizontalAlignment="Left" VerticalAlignment="Bottom" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Row="4" Grid.Column="9" HorizontalAlignment="Right" >
+                <Label  Content="{Binding Path=Pneft_in2}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold"/>
+            </Viewbox>
+
+            <Viewbox Grid.Column="10" Grid.Row="4" HorizontalAlignment="Left"  Grid.ColumnSpan="2" >
+                <Label Content="кПа" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Column="9" Grid.Row="6" HorizontalAlignment="Right"  >
+                <Label Content="{Binding Path=Tneft2}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold"  />
+            </Viewbox>
+            <Viewbox Grid.Column="10" Grid.Row="6" >
+                <Label Content="°С" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold"  Grid.RowSpan="2" />
+            </Viewbox>
+            <Viewbox Grid.Column="12" Grid.Row="7" HorizontalAlignment="Right" >
+                <Label Content="{Binding Path=Tvod2}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold" />
+            </Viewbox>
+            <Viewbox Grid.Column="13" Grid.Row="7" >
+                <Label Content="°С" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" />
+            </Viewbox>
+            <Viewbox Grid.Column="9" Grid.Row="9" >
+                <Label Content="{Binding Path=P_gas_reg2}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Column="10" Grid.Row="9" >
+                <Label Content="кПа" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" />
+            </Viewbox>
+            <Viewbox Grid.Column="13" Grid.Row="12" >
+                <Label Content="{Binding Path=Pgaz_kol2}" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="16" FontWeight="Bold" />
+            </Viewbox>
+            <Viewbox Grid.Column="14" Grid.Row="12"  >
+                <Label Content="кПа" VerticalAlignment="Bottom" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" />
+            </Viewbox>
+            <Viewbox Grid.Column="8" Grid.Row="10" Grid.ColumnSpan="5" Grid.RowSpan="4" >
+                <ListBox x:Name="Alarms1" Background="{x:Null}" BorderBrush="{x:Null}"  HorizontalAlignment="Left" VerticalAlignment="Top" >
+                    <ListBoxItem Content="Наличие пламени до розжига" Foreground="#FFFB1A1A" FontWeight="Bold" Visibility="{Binding Path=Error12[0]}"/>
+                    <ListBoxItem Content="Низкий уровень воды" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error12[2]}"/>
+                    <ListBoxItem Content="Высокое давление нефти на входе печи" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error12[5]}"/>
+                    <ListBoxItem Content="Низкое давление нефти на входе печи" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error12[6]}"/>
+                    <ListBoxItem Content="Не герметичен отсечной клапан на горелке" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error12[7]}"/>
+                    <ListBoxItem Content="Утечка газа в коллекторе" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error12[9]}"/>
+                    <ListBoxItem Content="Нет пламени на горелке" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error12[11]}"/>
+                    <ListBoxItem Content="Высокое давление газа на горелке" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error12[13]}"/>
+                    <ListBoxItem Content="Низкое давление газа на горелке" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error12[14]}"/>
+                    <ListBoxItem Content="Высокая температура воды" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error22[1]}"/>
+                    <ListBoxItem Content="Высокая температура нефти" Foreground="#FFFB1A1A" FontWeight="Bold"  Visibility="{Binding Path=Error22[2]}"/>
                 </ListBox>
             </Viewbox>
         </Grid>

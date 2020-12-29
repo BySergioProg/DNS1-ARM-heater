@@ -24,6 +24,7 @@ namespace DNS1_ARM_heater
         private class Errors
         {
             public string Time { get; set; }
+            public string BoilerNo { get; set; }
             public string Alarm { get; set; }
         }
         public ErrorHistory()
@@ -37,6 +38,7 @@ namespace DNS1_ARM_heater
         {
             try
             {
+                string boilerNo;
                 string Dir = Properties.Settings.Default.DBadress;
                 string connectionString = $@"Data Source={Dir};Initial Catalog=DNS_HEAT;Integrated Security=True";
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -52,10 +54,15 @@ namespace DNS1_ARM_heater
                     {
                         while (reader.Read())
                         {
+                            if ((int)reader.GetValue(4) == 1) {  boilerNo = "ПП-0.63"; }
+                            else
+                            { boilerNo = "ПП-0.63А"; }
                             errors.Add(new Errors()
                             {
                                 Time = Convert.ToString(reader.GetValue(1)),
-                                Alarm = (string)(reader.GetValue(3))
+                                Alarm = (string)(reader.GetValue(3)),
+                                BoilerNo= boilerNo
+
                             });
 
                         }
