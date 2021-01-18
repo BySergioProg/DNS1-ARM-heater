@@ -44,14 +44,22 @@ namespace DNS1_ARM_heater
         }
         private void SerialOpen()//Данные COM порта, подключение к порту
         {
-            serialPort.PortName = Properties.Settings.Default.PortName;
-            serialPort.BaudRate = Properties.Settings.Default.BaudRate;
-            serialPort.DataBits = Properties.Settings.Default.DataBits;
-            serialPort.Parity = Properties.Settings.Default.Parity;
-            serialPort.StopBits = Properties.Settings.Default.StopBits;
-            serialPort.Open();
+            try
+            {
+                serialPort.PortName = Properties.Settings.Default.PortName;
+                serialPort.BaudRate = Properties.Settings.Default.BaudRate;
+                serialPort.DataBits = Properties.Settings.Default.DataBits;
+                serialPort.Parity = Properties.Settings.Default.Parity;
+                serialPort.StopBits = Properties.Settings.Default.StopBits;
+                serialPort.Open();
+            }
+            catch (Exception Ex)
+            {
+                MessageBox.Show(Ex.Message);
+                throw;
+            }
         }
-        private ushort[] ReadMB(byte slaveID, ushort startAddress, ushort numOfPoints)
+        private ushort[] ReadMB(byte slaveID, ushort startAddress, ushort numOfPoints, out bool State)
         {
             try
             {
@@ -59,11 +67,16 @@ namespace DNS1_ARM_heater
                 master.Transport.ReadTimeout = 300; //milliseconds
                 ushort[] holding_register = master.ReadHoldingRegisters(slaveID, startAddress,
                   numOfPoints);
+                State = true;
                 return holding_register;
             }
-            catch
+            catch (Exception Ex)
             {
-                  throw;
+                Logger log = LogManager.GetCurrentClassLogger();
+                log.Error($"Ошибка чтения данных с контроллера адрес {slaveID}. {Ex.Message}");
+                ushort[] holding_register = new ushort[256];
+                State = false;
+                return holding_register;
             }
         }
         private string[] SetErrors(ushort ErrData)
@@ -172,16 +185,26 @@ namespace DNS1_ARM_heater
                 {
                     //Данные печи ПП-0.63 
                     #region PP-063
+                    bool State;
                     byte slaveID = Properties.Settings.Default.slaveID;
-                    ushort[] holding_register = ReadMB(slaveID, 264, 2);//265
+                  //  ushort[] holding_register = ReadMB(slaveID, 264, 2, out State);//265
+                                                                                   //mbData.P_gas_reg = holding_register[0];
+                                                                                   //mbData.Pgaz_kol = holding_register[1];
+                                                                                   //holding_register = ReadMB(slaveID, 337, 1, out State);//338
+                                                                                   //mbData.Tneft = holding_register[0];
+                                                                                   //holding_register = ReadMB(slaveID, 341, 2, out State);//342
+                                                                                   //mbData.Tvod = holding_register[0];
+                                                                                   //mbData.Pneft_in = holding_register[1];
+
+                    ushort[] holding_register = ReadMB(slaveID, 264, 1, out State);//265
                     mbData.P_gas_reg = holding_register[0];
-                    mbData.Pgaz_kol = holding_register[1];
-                    holding_register = ReadMB(slaveID, 337, 1);//338
+                    holding_register = ReadMB(slaveID, 312, 6, out State);//313
                     mbData.Tneft = holding_register[0];
-                    holding_register = ReadMB(slaveID, 341, 2);//342
-                    mbData.Tvod = holding_register[0];
-                    mbData.Pneft_in = holding_register[1];
-                    holding_register = ReadMB(slaveID, 272, 1);//273
+                    mbData.Pgaz_kol = holding_register[2];
+                    mbData.Tvod = holding_register[4];
+                    mbData.Pneft_in = holding_register[5];
+
+                    holding_register = ReadMB(slaveID, 272, 1, out State);//273
                     switch (holding_register[0])
                     {
                         case 1:
@@ -230,7 +253,11 @@ namespace DNS1_ARM_heater
                             mbData.StageWork = "Не определено";
                             break;
                     }
-                    holding_register = ReadMB(slaveID, 266, 2);//267
+                    holding_register = ReadMB(slaveID, 266, 2, out State);//267
+                    if (State)
+                    { Connect1.Visibility = Visibility.Hidden; }
+                    else
+                    { Connect1.Visibility = Visibility.Visible; }
                     mbData.Error1 = SetErrors(holding_register[0]);
                     mbData.Error2 = SetErrors(holding_register[1]);
                     BitArray Error1 = new BitArray(new int[] { holding_register[0] });
@@ -251,14 +278,14 @@ namespace DNS1_ARM_heater
 
                     #region PP-063A
                     slaveID = Properties.Settings.Default.slaveID2;
-                    holding_register = ReadMB(slaveID, 264, 1);//265
+                    holding_register = ReadMB(slaveID, 264, 1, out State);//265
                     mbData.P_gas_reg2 = holding_register[0];
-                    holding_register = ReadMB(slaveID, 312, 6);//313
+                    holding_register = ReadMB(slaveID, 312, 6, out State);//313
                     mbData.Tneft2 = holding_register[0];
                     mbData.Pgaz_kol2 = holding_register[2];
                     mbData.Tvod2 = holding_register[4];
-                    mbData.Pneft_in2 = holding_register[5];
-                    holding_register = ReadMB(slaveID, 272, 1);//273
+                    mbData.Pneft_in2 =Convert.ToUInt16( holding_register[5]*10);
+                    holding_register = ReadMB(slaveID, 272, 1, out State);//273
                     switch (holding_register[0])
                     {
                         case 1:
@@ -307,7 +334,11 @@ namespace DNS1_ARM_heater
                             mbData.StageWork2 = "Не определено";
                             break;
                     }
-                    holding_register = ReadMB(slaveID, 266, 2);//267
+                    holding_register = ReadMB(slaveID, 266, 2, out State);//267
+                    if (State)
+                    { Connect2.Visibility = Visibility.Hidden; }
+                    else
+                    { Connect2.Visibility = Visibility.Visible; }
                     mbData.Error12 = SetErrors(holding_register[0]);
                     mbData.Error22 = SetErrors(holding_register[1]);
                     BitArray Error12 = new BitArray(new int[] { holding_register[0] });

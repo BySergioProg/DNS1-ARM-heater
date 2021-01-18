@@ -46,8 +46,14 @@
             <Viewbox Grid.Row="1" Grid.Column="3" Grid.ColumnSpan="3">
                 <Label Content="ПП-0.63" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"/>
             </Viewbox>
+            <Viewbox Grid.Row="2" Grid.Column="3" Grid.ColumnSpan="3">
+                <Label x:Name="Connect1" Content="Нет связи" Foreground="#FFFB1A1A" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"/>
+            </Viewbox>
             <Viewbox Grid.Row="1" Grid.Column="11" Grid.ColumnSpan="3">
                 <Label Content="ПП-0.63А" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"/>
+            </Viewbox>
+            <Viewbox Grid.Row="2" Grid.Column="11" Grid.ColumnSpan="3">
+                <Label x:Name="Connect2" Content="Нет связи" Foreground="#FFFB1A1A" FontSize="16" HorizontalAlignment="Right" VerticalAlignment="Bottom" FontWeight="Bold"/>
             </Viewbox>
             <Viewbox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2">
                 <Button Content="Журнал аварий" Click="AlarmHilstoryFormOpen"/>

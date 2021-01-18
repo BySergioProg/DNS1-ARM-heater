@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="slaveID" Type="System.Byte" Scope="Application">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">2</Value>
     </Setting>
     <Setting Name="PortName" Type="System.String" Scope="Application">
       <Value Profile="(Default)">Com3</Value>
@@ -18,7 +18,7 @@
       <Value Profile="(Default)">.\WINCC</Value>
     </Setting>
     <Setting Name="Parity" Type="System.IO.Ports.Parity" Scope="Application">
-      <Value Profile="(Default)">None</Value>
+      <Value Profile="(Default)">Odd</Value>
     </Setting>
     <Setting Name="StopBits" Type="System.IO.Ports.StopBits" Scope="Application">
       <Value Profile="(Default)">One</Value>

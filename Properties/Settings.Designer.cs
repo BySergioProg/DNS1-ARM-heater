@@ -25,7 +25,7 @@ namespace DNS1_ARM_heater.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public byte slaveID {
             get {
                 return ((byte)(this["slaveID"]));
@@ -70,7 +70,7 @@ namespace DNS1_ARM_heater.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("None")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Odd")]
         public global::System.IO.Ports.Parity Parity {
             get {
                 return ((global::System.IO.Ports.Parity)(this["Parity"]));
